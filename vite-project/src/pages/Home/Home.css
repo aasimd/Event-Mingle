@@ -1,0 +1,14 @@
+/** @format */
+
+.bright-section {
+	background-color: rgba(244, 244, 244);
+	color: #333333;
+	margin-top: 30px;
+	padding: 20px;
+	text-align: left;
+	border-radius: 20px;
+	max-width: 400px;
+}
+.bright-section b {
+	font-size: 1.5rem;
+}
