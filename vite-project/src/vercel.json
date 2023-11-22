@@ -1,0 +1,24 @@
+{
+	"rewrites": [
+		{
+			"source": "/",
+			"destination": "/index.html"
+		},
+		{
+			"source": "/volunteers",
+			"destination": "/volunteers/index.html"
+		},
+		{
+			"source": "/volunteers/:volunteerId",
+			"destination": "/volunteers/:volunteerId/index.html"
+		},
+		{
+			"source": "/events",
+			"destination": "/events/index.html"
+		},
+		{
+			"source": "/events/:eventId",
+			"destination": "/events/:eventId/index.html"
+		}
+	]
+}

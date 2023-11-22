@@ -1,0 +1,16 @@
+/** @format */
+
+.nav-bar {
+	display: flex;
+	flex-wrap: wrap;
+}
+.nav-bar ul {
+	display: flex;
+	list-style: none;
+}
+.nav-bar ul li {
+	padding: 10px;
+}
+.nav-bar h2 {
+	cursor: pointer;
+}
