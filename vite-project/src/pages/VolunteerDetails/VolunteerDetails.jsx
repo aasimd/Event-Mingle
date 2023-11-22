@@ -1,14 +1,18 @@
 /** @format */
 
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { deleteVolunteer } from "../../pages/Volunteers/VolunteersSlice";
+import VolunteerForm from "../../components/VolunteerForm/VolunteerForm";
+import { editVolunteerHandler } from "../../utils";
 const VolunteerDetails = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const { volunteerId } = useParams();
 	const { volunteers, status, error } = useSelector((s) => s.volunteers);
 	const volunteer = volunteers.find((v) => v._id === volunteerId);
+	const [showEdit, setShowEdit] = useState(false);
 	const {
 		name,
 		skills,
@@ -20,6 +24,9 @@ const VolunteerDetails = () => {
 		gender,
 		occupation
 	} = volunteer;
+	if (status === "loading") return <h1>Loading...</h1>;
+	if (status === "error") return <p>{error}</p>;
+
 	return (
 		<div>
 			<div>
@@ -39,18 +46,47 @@ const VolunteerDetails = () => {
 						<br />
 						Occupation: <b>{occupation}</b>
 						<br />
-						Skills: <b>{skills.map((s) => s).join(", ")}</b>
+						Skills:{" "}
+						{skills.length > 0 ? (
+							<b>{skills.map((s) => s).join(", ")}</b>
+						) : (
+							"No Skills Added"
+						)}
 						<br />
-						Areas of Interest: <b>{areasOfInterest.map((a) => a).join(", ")}</b>
+						Areas of Interest:{" "}
+						{areasOfInterest.length > 0 ? (
+							<b>{areasOfInterest.map((a) => a).join(", ")}</b>
+						) : (
+							"No Interests Added"
+						)}
 						<br />
-						Events History: <b>{eventsHistory.map((e) => e).join(", ")}</b>
+						Events History:{" "}
+						{eventsHistory.length > 0 ? (
+							<b>{eventsHistory.map((e) => e).join(", ")}</b>
+						) : (
+							"No Events Added"
+						)}
 					</p>
 				</div>
 				<div>
-					<div>
-						<button>Edit</button>
-					</div>
-					<div>
+					{showEdit ? (
+						<VolunteerForm
+							volunteer={volunteer}
+							type="edit"
+							submitFunction={editVolunteerHandler}
+							setShow={setShowEdit}
+						/>
+					) : (
+						<div>
+							<button onClick={() => setShowEdit(true)}>Edit</button>
+						</div>
+					)}
+					<div
+						onClick={() => {
+							dispatch(deleteVolunteer({ volunteerId: volunteerId }));
+							navigate(-1);
+						}}
+					>
 						<button>Delete</button>
 					</div>
 				</div>

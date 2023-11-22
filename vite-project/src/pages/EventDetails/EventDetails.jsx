@@ -1,21 +1,24 @@
 /** @format */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchOneEvent } from "../Events/EventsSlice";
+import { deleteEvent, fetchOneEvent } from "../Events/EventsSlice";
 import { fetchVolunteers } from "../Volunteers/VolunteersSlice";
 import VolunteersListForEventDetailsPage from "../../components/VolunteersListForEventDetailsPage/VolunteersListForEventDetailsPage";
+import EventForm from "../../components/EventForm/EventForm";
+import { editEventHandler } from "../../utils";
 
 const EventDate = ({ date }) => {
 	return <b>{date.slice(0, 10)}</b>;
 };
 
 const EventDetails = () => {
+	const [showEdit, setShowEdit] = useState(false);
 	const { eventId } = useParams();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { status, error, selectedEvent, events } = useSelector((s) => s.events);
+	const { status, error, events } = useSelector((s) => s.events);
 	const { status: volunteersStatus } = useSelector((s) => s.volunteers);
 	useEffect(() => {
 		dispatch(fetchOneEvent({ eventId: eventId }));
@@ -37,6 +40,14 @@ const EventDetails = () => {
 			</div>
 			<div>
 				<h1>Event Details</h1>
+				{showEdit && (
+					<EventForm
+						event={event}
+						type={"edit"}
+						setShow={setShowEdit}
+						submitFunction={editEventHandler}
+					/>
+				)}
 				<div>
 					<h2>{event.name}</h2>
 					<p>
@@ -54,14 +65,21 @@ const EventDetails = () => {
 							/>
 						)}
 					</p>
-				</div>
-			</div>
-			<div>
-				<div>
-					<button>Edit</button>
-				</div>
-				<div>
-					<button>Delete</button>
+					<div>
+						<div>
+							<button onClick={() => setShowEdit(true)}>Edit</button>
+						</div>
+						<div>
+							<button
+								onClick={() => {
+									navigate(-1);
+									dispatch(deleteEvent({ eventId: event._id }));
+								}}
+							>
+								Delete
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -21,10 +21,14 @@ const VolunteersListForEventDetailsPage = ({ eventVolunteers }) => {
 		<div>
 			<p>
 				Volunteers:{" "}
-				{volunteersObjs.map((v) => (
-					<NavLink to={`/volunteers/${v._id}`}>{v.name}, </NavLink>
-				))}{" "}
-				etc.
+				{volunteersObjs.map((v, index) => {
+					return (
+						<NavLink to={`/volunteers/${v._id}`}>
+							{v.name}
+							{index !== volunteersObjs.length - 1 && ","}{" "}
+						</NavLink>
+					);
+				})}
 			</p>
 		</div>
 	);
